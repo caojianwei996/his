@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" href="/favicon.ico"/>
+    <link rel="stylesheet" href="/asset/normalize.css">
+    <link rel="stylesheet" href="/asset/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>授权</title>
+    <script sec:authorize="!isAuthenticated()">
+        window.location.href = "/login"
+    </script>
+</head>
+<body>
+<div id="app">
+    <form class="form" action="/oauth2/authorize" method="post" sec:authorize="isAuthenticated()">
+        <label>
+            <span class="title">授权</span>
+        </label>
+        <label>
+            <input type="hidden" name="client_id" id="client_id"/>
+        </label>
+        <label>
+            <input type="hidden" name="state" id="state">
+        </label>
+        <label sec:authorize="hasRole('ADMIN')">
+            <input type="checkbox" name="scope" checked value="ADMIN"/>
+            <span>管理</span>
+        </label>
+        <label sec:authorize="hasRole('REGISTRATION')">
+            <input type="checkbox" name="scope" checked value="REGISTRATION"/>
+            <span>挂号</span>
+        </label>
+        <label sec:authorize="hasRole('OUTPATIENT')">
+            <input type="checkbox" name="scope" checked value="OUTPATIENT"/>
+            <span>门诊</span>
+        </label>
+        <label sec:authorize="hasRole('INSPECT')">
+            <input type="checkbox" name="scope" checked value="INSPECT"/>
+            <span>检查</span>
+        </label>
+        <label sec:authorize="hasRole('CLINICAL')">
+            <input type="checkbox" name="scope" checked value="CLINICAL"/>
+            <span>检验</span>
+        </label>
+        <label sec:authorize="hasRole('DISPOSAL')">
+            <input type="checkbox" name="scope" checked value="DISPOSAL"/>
+            <span>处置</span>
+        </label>
+        <label sec:authorize="hasRole('PHARMACY')">
+            <input type="checkbox" name="scope" checked value="PHARMACY"/>
+            <span>药房</span>
+        </label>
+        <label sec:authorize="!hasAnyRole('ADMIN','REGISTRATION','OUTPATIENT','INSPECT','CLINICAL','DISPOSAL','PHARMACY')">
+            <input type="checkbox" name="scope" checked value="GUEST"/>
+            <span>患者</span>
+        </label>
+        <label>
+            <button type="submit" autofocus>授权</button>
+        </label>
+    </form>
+</div>
+<script>
+    const searchParams = new URL(window.location.href).searchParams
+    document.querySelector("#client_id").value = searchParams.get("client_id")
+    document.querySelector("#state").value = searchParams.get("state")
+</script>
+</body>
+</html>
