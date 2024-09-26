@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" href="/favicon.ico"/>
+    <link rel="stylesheet" href="/asset/normalize.css">
+    <link rel="stylesheet" href="/asset/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>首页</title>
+    <script sec:authorize="!isAuthenticated()">
+        window.location.href = "/login"
+    </script>
+</head>
+<body>
+<div id="app">
+    首页
+</div>
+</body>
+</html>
