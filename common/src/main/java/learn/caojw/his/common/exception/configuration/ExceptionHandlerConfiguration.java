@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 public class ExceptionHandlerConfiguration {
     @Bean
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-    public ServletExceptionHandler globalExceptionHandler() {
+    public ServletExceptionHandler servletExceptionHandler() {
         return new ServletExceptionHandler();
     }
 

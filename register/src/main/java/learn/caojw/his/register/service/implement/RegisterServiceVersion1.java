@@ -5,7 +5,9 @@ import learn.caojw.his.common.api.WalletApi;
 import learn.caojw.his.common.entity.Response;
 import learn.caojw.his.common.exception.ServiceException;
 import learn.caojw.his.common.interceptor.AuthorityInterceptor;
+import learn.caojw.his.register.entity.Employee;
 import learn.caojw.his.register.entity.Register;
+import learn.caojw.his.register.repository.EmployeeRepository;
 import learn.caojw.his.register.repository.RegisterRepository;
 import learn.caojw.his.register.service.IRegisterService;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +23,15 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @Service
 public class RegisterServiceVersion1 implements IRegisterService {
+    private final EmployeeRepository employeeRepository;
     private final RegisterRepository registerRepository;
     private final WalletApi walletApi;
 
     @GlobalTransactional
     @Override
     public void insert(Register register) {
-        Response<Void> response = walletApi.consume(register.getEmployee().getLevel().getFee());
+        Employee employee = employeeRepository.selectById(register.getEmployee().getId());
+        Response<Void> response = walletApi.consume(employee.getLevel().getFee());
         if (response == null) {
             throw new ServiceException("");
         } else if (response.code() != 20000) {
@@ -45,22 +49,25 @@ public class RegisterServiceVersion1 implements IRegisterService {
             throw new ServiceException("未查询到挂号信息");
         } else if ("已挂号".equals(oldRegister.getState())) {
             if ("已退费".equals(register.getState())) {
-                Response<Void> response = walletApi.recharge(register.getEmployee().getLevel().getFee());
+                Response<Void> response = walletApi.recharge(oldRegister.getEmployee().getLevel().getFee());
                 if (response == null) {
                     throw new ServiceException("");
                 } else if (response.code() != 20000) {
                     throw new ServiceException(response.message());
                 } else {
-                    registerRepository.update(register);
+                    oldRegister.setState(register.getState());
+                    registerRepository.update(oldRegister);
                 }
             } else if ("已接诊".equals(register.getState())) {
-                registerRepository.update(register);
+                oldRegister.setState(register.getState());
+                registerRepository.update(oldRegister);
             } else {
                 throw new ServiceException("非法状态转换");
             }
         } else if ("已接诊".equals(oldRegister.getState())) {
             if ("已完成".equals(register.getState())) {
-                registerRepository.update(register);
+                oldRegister.setState(register.getState());
+                registerRepository.update(oldRegister);
             } else {
                 throw new ServiceException("非法状态转换");
             }
@@ -70,8 +77,8 @@ public class RegisterServiceVersion1 implements IRegisterService {
     }
 
     @Override
-    public Collection<Register> selectAll() {
-        return registerRepository.selectAll();
+    public Collection<Register> select() {
+        return registerRepository.select();
     }
 
     @Override
@@ -86,11 +93,10 @@ public class RegisterServiceVersion1 implements IRegisterService {
 
     @Override
     public Collection<Register> selectByEmployee() {
-        String username = AuthorityInterceptor.getUsername();
-        if ("ADMIN".equals(username)) {
+        if ("ADMIN".equals(AuthorityInterceptor.getAuthority())) {
             return registerRepository.selectAll();
         } else {
-            return registerRepository.selectByEmployee(username);
+            return registerRepository.selectByEmployee(AuthorityInterceptor.getUsername());
         }
     }
 }

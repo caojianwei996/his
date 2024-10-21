@@ -42,5 +42,5 @@ Maven 3.9.8
 ## 运行环境
 
 Ubuntu 24.04 LTS  
-Containerd 1.7.22
+Containerd 1.7.22  
 Kubernetes 1.31.1

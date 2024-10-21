@@ -18,6 +18,7 @@ import java.util.Collection;
  */
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/wallet")
 public class WalletController {
     private final IWalletService walletService;
 

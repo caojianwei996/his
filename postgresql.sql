@@ -1,6 +1,7 @@
 drop schema if exists his_authorization cascade;
 create schema his_authorization;
-set search_path = his_authorization;
+set
+search_path = his_authorization;
 create table users
 (
     username  char(8) primary key,
@@ -23,15 +24,14 @@ values ('00000000', '$2a$10$5akX3lQH0qvX5.C11AAVy.dh/Jxff4/0zRiEc/P3niTtvrkoDJWd
        ('20000001', '$2a$10$5akX3lQH0qvX5.C11AAVy.dh/Jxff4/0zRiEc/P3niTtvrkoDJWd2', 'ROLE_OUTPATIENT'),
        ('30000000', '$2a$10$5akX3lQH0qvX5.C11AAVy.dh/Jxff4/0zRiEc/P3niTtvrkoDJWd2', 'ROLE_INSPECT'),
        ('30000001', '$2a$10$5akX3lQH0qvX5.C11AAVy.dh/Jxff4/0zRiEc/P3niTtvrkoDJWd2', 'ROLE_INSPECT'),
-       ('40000000', '$2a$10$5akX3lQH0qvX5.C11AAVy.dh/Jxff4/0zRiEc/P3niTtvrkoDJWd2', 'ROLE_CLINICAL'),
-       ('40000001', '$2a$10$5akX3lQH0qvX5.C11AAVy.dh/Jxff4/0zRiEc/P3niTtvrkoDJWd2', 'ROLE_CLINICAL'),
        ('50000000', '$2a$10$5akX3lQH0qvX5.C11AAVy.dh/Jxff4/0zRiEc/P3niTtvrkoDJWd2', 'ROLE_DISPOSAL'),
        ('50000001', '$2a$10$5akX3lQH0qvX5.C11AAVy.dh/Jxff4/0zRiEc/P3niTtvrkoDJWd2', 'ROLE_DISPOSAL'),
        ('60000000', '$2a$10$5akX3lQH0qvX5.C11AAVy.dh/Jxff4/0zRiEc/P3niTtvrkoDJWd2', 'ROLE_PHARMACY'),
        ('60000001', '$2a$10$5akX3lQH0qvX5.C11AAVy.dh/Jxff4/0zRiEc/P3niTtvrkoDJWd2', 'ROLE_PHARMACY');
 drop schema if exists his_system cascade;
 create schema his_system;
-set search_path = his_system;
+set
+search_path = his_system;
 create table menus
 (
     id       serial primary key,
@@ -44,40 +44,30 @@ create table menus
     foreign key (parent) references menus (id) on delete cascade on update cascade
 );
 insert into menus(type, title, icon, priority, parent, role)
-values ('menu', '系统', 'setting', 1, null, null),
+values ('menu', '系统', 'setting', 1, null, 'ADMIN'),
        ('menu', '挂号', 'common', 2, null, 'REGISTRATION'),
        ('menu', '门诊', 'common', 3, null, 'OUTPATIENT'),
-       ('menu', '检查', 'common', 3, null, 'INSPECT'),
-       ('menu', '检验', 'common', 3, null, 'CLINICAL'),
-       ('menu', '处置', 'common', 3, null, 'DISPOSAL'),
-       ('menu', '药房', 'common', 3, null, 'PHARMACY'),
-       ('item', '菜单', '', 1, 1, null),
+       ('menu', '检查', 'common', 4, null, 'INSPECT'),
+       ('menu', '处置', 'common', 5, null, 'DISPOSAL'),
+       ('menu', '药房', 'common', 6, null, 'PHARMACY'),
+       ('item', '菜单', '', 1, 1, 'ADMIN'),
        ('item', '挂号', '', 1, 2, 'REGISTRATION'),
        ('item', '退号', '', 2, 2, 'REGISTRATION'),
-       ('item', '收费', '', 3, 2, 'REGISTRATION'),
-       ('item', '退费', '', 4, 2, 'REGISTRATION'),
-       ('item', '信息', '', 5, 2, 'REGISTRATION'),
+       ('item', '信息', '', 3, 2, 'REGISTRATION'),
        ('item', '诊疗', '', 1, 3, 'OUTPATIENT'),
        ('item', '检查', '', 2, 3, 'OUTPATIENT'),
-       ('item', '检验', '', 3, 3, 'OUTPATIENT'),
-       ('item', '开药', '', 4, 3, 'OUTPATIENT'),
-       ('item', '处置', '', 5, 3, 'OUTPATIENT'),
+       ('item', '开药', '', 3, 3, 'OUTPATIENT'),
+       ('item', '处置', '', 4, 3, 'OUTPATIENT'),
        ('item', '记录', '', 1, 4, 'INSPECT'),
-       ('item', '详情', '', 2, 4, 'INSPECT'),
-       ('item', '结果', '', 3, 4, 'INSPECT'),
-       ('item', '记录', '', 1, 5, 'CLINICAL'),
-       ('item', '详情', '', 2, 5, 'CLINICAL'),
-       ('item', '结果', '', 3, 5, 'CLINICAL'),
-       ('item', '记录', '', 1, 6, 'DISPOSAL'),
-       ('item', '详情', '', 2, 6, 'DISPOSAL'),
-       ('item', '结果', '', 3, 6, 'DISPOSAL'),
-       ('item', '药库', '', 1, 7, 'PHARMACY'),
-       ('item', '发药', '', 2, 7, 'PHARMACY'),
-       ('item', '退药', '', 3, 7, 'PHARMACY'),
-       ('item', '信息', '', 3, 7, 'PHARMACY');
+       ('item', '记录', '', 1, 5, 'DISPOSAL'),
+       ('item', '药库', '', 1, 6, 'PHARMACY'),
+       ('item', '发药', '', 2, 6, 'PHARMACY'),
+       ('item', '退药', '', 3, 6, 'PHARMACY'),
+       ('item', '信息', '', 4, 6, 'PHARMACY');
 drop schema if exists his_register cascade;
 create schema his_register;
-set search_path = his_register;
+set
+search_path = his_register;
 create table departments
 (
     id   serial primary key,
@@ -92,14 +82,13 @@ values ('EK', '儿科'),
        ('XHK', '消化科');
 create table levels
 (
-    id    serial primary key,
-    name  varchar(64)   not null,
-    fee   numeric(8, 2) not null,
-    quota numeric(5, 0) not null
+    id   serial primary key,
+    name varchar(64)   not null,
+    fee  numeric(8, 2) not null
 );
-insert into levels (name, fee, quota)
-values ('普通号', 10, 100),
-       ('专家号', 50, 20);
+insert into levels (name, fee)
+values ('普通号', 10),
+       ('专家号', 50);
 create table employees
 (
     id         char(8) primary key,
@@ -126,10 +115,10 @@ create table registers
     id       serial primary key,
     name     varchar(64) not null,
     gender   varchar(6)  not null,
-    birthday timestamptz not null,
+    birthday timestamp   not null,
     employee char(8)     not null,
-    time     timestamptz not null,
-    state    varchar(4)  not null default '已挂号',
+    time     timestamp   not null,
+    state    char(3)     not null default '已挂号',
     foreign key (employee) references employees (id)
 );
 create table undo_log
@@ -140,14 +129,15 @@ create table undo_log
     context       varchar(128) not null,
     rollback_info bytea        not null,
     log_status    int          not null,
-    log_created   timestamptz  not null,
-    log_modified  timestamptz  not null,
+    log_created   timestamp    not null,
+    log_modified  timestamp    not null,
     ext           varchar(100) default null,
     unique (xid, branch_id)
 );
 drop schema if exists his_medicine cascade;
 create schema his_medicine;
-set search_path = his_medicine;
+set
+search_path = his_medicine;
 create table medicines
 (
     id           serial primary key,
@@ -172,7 +162,7 @@ create table records
     change   numeric(8, 0) not null,
     before   numeric(8, 0) not null,
     after    numeric(8, 0) not null,
-    time     timestamptz   not null,
+    time     timestamp     not null,
     foreign key (medicine) references medicines (id)
 );
 create table undo_log
@@ -183,14 +173,15 @@ create table undo_log
     context       varchar(128) not null,
     rollback_info bytea        not null,
     log_status    int          not null,
-    log_created   timestamptz  not null,
-    log_modified  timestamptz  not null,
+    log_created   timestamp    not null,
+    log_modified  timestamp    not null,
     ext           varchar(100) default null,
     unique (xid, branch_id)
 );
 drop schema if exists his_wallet cascade;
 create schema his_wallet;
-set search_path = his_wallet;
+set
+search_path = his_wallet;
 create table wallets
 (
     id    serial primary key,
@@ -206,6 +197,6 @@ create table records
     spend  numeric(16, 2) not null,
     before numeric(16, 2) not null,
     after  numeric(16, 2) not null,
-    time   timestamptz    not null,
+    time   timestamp      not null,
     foreign key (wallet) references wallets (id)
 );

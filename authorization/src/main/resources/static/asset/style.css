@@ -6,7 +6,6 @@
     display: flex;
     width: 100vw;
     height: 100vh;
-    background-image: linear-gradient(to bottom, #ffff00, #00ffff);
 }
 
 .form {

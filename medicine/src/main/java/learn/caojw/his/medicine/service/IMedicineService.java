@@ -1,5 +1,6 @@
 package learn.caojw.his.medicine.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import learn.caojw.his.medicine.entity.Medicine;
 import learn.caojw.his.medicine.entity.Record;
 
@@ -15,13 +16,7 @@ public interface IMedicineService {
 
     void delete(Long id);
 
-    void update(Medicine medicine);
+    Page<Medicine> select(Integer page, Integer size, String code);
 
-    Collection<Medicine> select(int page, int size);
-
-    Collection<Medicine> select(String code);
-
-    Medicine selectById(Long id);
-
-    Collection<Record> selectRecord(int page, int size);
+    Page<Record> selectRecord(int page, int size);
 }

@@ -52,11 +52,16 @@
     <update id="update" parameterType="learn.caojw.his.register.entity.Register">
         update registers
         set state = #{state}
-        where id = #{id};
+        where id = #{id}
     </update>
+    <select id="select" resultMap="register">
+        select *
+        from registers
+    </select>
     <select id="selectAll" resultMap="register">
         select *
         from registers
+        where state in ('已挂号','已接诊')
     </select>
     <select id="selectById" resultMap="register">
         select *

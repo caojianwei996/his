@@ -14,7 +14,7 @@ public interface IRegisterService {
 
     void update(Register register);
 
-    Collection<Register> selectAll();
+    Collection<Register> select();
 
     Register selectById(Long id);
 

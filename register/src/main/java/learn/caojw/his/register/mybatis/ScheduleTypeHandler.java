@@ -41,7 +41,7 @@ public class ScheduleTypeHandler extends BaseTypeHandler<Boolean[]> {
     private Boolean[] encode(long data) {
         Boolean[] result = new Boolean[10];
         for (int j = 10; j > 0; j--) {
-            result[j - 1] = (data & 1) == 1 ? Boolean.TRUE : Boolean.FALSE;
+            result[j - 1] = (data & 1) == 1;
             data = data >> 1;
         }
         return result;

@@ -1,5 +1,6 @@
 package learn.caojw.his.medicine.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import learn.caojw.his.common.entity.Request;
 import learn.caojw.his.common.entity.Response;
 import learn.caojw.his.medicine.entity.Medicine;
@@ -7,8 +8,6 @@ import learn.caojw.his.medicine.entity.Record;
 import learn.caojw.his.medicine.service.IMedicineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
 
 /**
  * 药库控制层
@@ -34,13 +33,13 @@ public class MedicineController {
     }
 
     @GetMapping
-    public Response<Collection<Medicine>> select(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        return Response.ok(medicineService.select(page, size));
+    public Response<Page<Medicine>> selectMedicineByCode(@RequestParam("page") Integer page, @RequestParam("size") Integer size, @RequestParam("code") String code) {
+        return Response.ok(medicineService.select(page, size, code));
     }
 
 
     @GetMapping("/record")
-    public Response<Collection<Record>> select(@RequestParam("page") int page, @RequestParam("size") int size) {
+    public Response<Page<Record>> selectRecord(@RequestParam("page") int page, @RequestParam("size") int size) {
         return Response.ok(medicineService.selectRecord(page, size));
     }
 }

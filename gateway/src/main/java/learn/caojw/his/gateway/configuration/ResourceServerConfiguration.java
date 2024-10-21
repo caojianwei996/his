@@ -24,7 +24,11 @@ public class ResourceServerConfiguration {
                 .authorizeExchange(exchange -> exchange.anyExchange().authenticated())
                 .cors(cors -> {
                             UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-                            source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+                            CorsConfiguration corsConfiguration = new CorsConfiguration();
+                            corsConfiguration.addAllowedOrigin("*");
+                            corsConfiguration.addAllowedHeader("*");
+                            corsConfiguration.addAllowedMethod("*");
+                            source.registerCorsConfiguration("/**", corsConfiguration);
                             cors.configurationSource(source);
                         }
                 )

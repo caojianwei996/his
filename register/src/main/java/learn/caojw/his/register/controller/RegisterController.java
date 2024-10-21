@@ -16,6 +16,7 @@ import java.util.Collection;
  */
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/register")
 public class RegisterController {
     private final IRegisterService registerService;
 
@@ -26,9 +27,14 @@ public class RegisterController {
     }
 
     @PutMapping
-    public Response<Void> delete(@RequestBody Request<Register> request) {
+    public Response<Void> update(@RequestBody Request<Register> request) {
         registerService.update(request.data());
         return Response.ok();
+    }
+
+    @GetMapping("/all")
+    public Response<Collection<Register>> select() {
+        return Response.ok(registerService.select());
     }
 
     @GetMapping("/id/{id}")

@@ -63,7 +63,6 @@ public class WalletServiceVersion1 implements IWalletService {
             recordRepository.insert(record);
             wallet.setMoney(wallet.getMoney().subtract(money));
             walletRepository.updateById(wallet);
-            System.out.println(wallet);
         }
     }
 

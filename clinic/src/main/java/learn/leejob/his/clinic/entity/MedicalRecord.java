@@ -1,25 +1,29 @@
 package learn.leejob.his.clinic.entity;
 
-import lombok.AllArgsConstructor;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
+/**
+ * 病历实体
+ *
+ * @author 李钊浦
+ */
+@TableName("medical_record")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 public class MedicalRecord {
+    @TableId(type = IdType.AUTO)
     private Integer id;
     private Integer registerId;
     private String readme;
     private String present;
-    private String presentTreat;  //现病治疗情况
-    private String history;  //既往史治疗情况
-    private String allergy;//过敏史
-    private String physique;//体格检查
-    private String proposal;//检查/检验建议
-    private String careful;//注意事项
-    private String diagnosis;//诊断结果
-    private String cure; //处理意见
+    private String presentTreat;
+    private String history;
+    private String allergy;
+    private String physique;
+    private String proposal;
+    private String careful;
+    private String diagnosis;
+    private String cure;
 }

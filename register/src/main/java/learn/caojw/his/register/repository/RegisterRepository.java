@@ -16,6 +16,8 @@ public interface RegisterRepository {
 
     void update(Register register);
 
+    Collection<Register> select();
+
     Collection<Register> selectAll();
 
     Register selectById(Long id);

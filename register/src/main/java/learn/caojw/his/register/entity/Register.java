@@ -1,8 +1,9 @@
 package learn.caojw.his.register.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 /**
  * 挂号实体
@@ -14,8 +15,9 @@ public class Register {
     private Long id;
     private String name;
     private String gender;
-    private OffsetDateTime birthday;
-    private OffsetDateTime time;
+    private LocalDateTime birthday;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime time;
     private String state;
     private Employee employee;
 }
