@@ -1,0 +1,17 @@
+server:
+  port: 8087
+  servlet:
+    context-path: /wallet
+spring:
+  application:
+    name: wallet-service
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        shared-configs:
+          - data-id: jackson-shared.yaml
+            refresh: true
+          - data-id: sentinel-shared.yaml
+            refresh: true
+      server-addr: localhost:8848

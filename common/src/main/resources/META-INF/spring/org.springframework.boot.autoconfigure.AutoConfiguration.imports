@@ -1,0 +1,3 @@
+learn.caojw.his.common.exception.configuration.ExceptionHandlerConfiguration
+learn.caojw.his.common.interceptor.configuration.AuthorityInterceptorConfiguration
+learn.caojw.his.common.openfeign.configuration.HeaderInterceptorConfiguration

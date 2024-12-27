@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="learn.caojw.his.register.repository.RegisterRepository">
+    <resultMap id="department" type="learn.caojw.his.register.entity.Department">
+        <id property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <resultMap id="level" type="learn.caojw.his.register.entity.Level">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="fee" column="fee"/>
+        <result property="quota" column="quota"/>
+    </resultMap>
+    <resultMap id="employee" type="learn.caojw.his.register.entity.Employee">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="scheduling" column="scheduling"/>
+        <association property="department" column="department" select="selectDepartmentById"/>
+        <association property="level" column="level" select="selectLevelById"/>
+    </resultMap>
+    <resultMap id="register" type="learn.caojw.his.register.entity.Register">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="birthday" column="birthday"/>
+        <result property="time" column="time"/>
+        <result property="state" column="state"/>
+        <association property="employee" column="employee" select="selectEmployeeById"/>
+    </resultMap>
+    <select id="selectDepartmentById" resultMap="department">
+        select *
+        from departments
+        where id = #{id}
+    </select>
+    <select id="selectLevelById" resultMap="level">
+        select *
+        from levels
+        where id = #{id}
+    </select>
+    <select id="selectEmployeeById" resultMap="employee">
+        select *
+        from employees
+        where id = #{id}
+    </select>
+    <insert id="insert" parameterType="learn.caojw.his.register.entity.Register">
+        insert into registers (name, gender, birthday, employee, time)
+        values (#{name}, #{gender}, #{birthday}, #{employee.id}, #{time})
+    </insert>
+    <update id="update" parameterType="learn.caojw.his.register.entity.Register">
+        update registers
+        set state = #{state}
+        where id = #{id}
+    </update>
+    <select id="select" resultMap="register">
+        select *
+        from registers
+    </select>
+    <select id="selectAll" resultMap="register">
+        select *
+        from registers
+        where state in ('已挂号','已接诊')
+    </select>
+    <select id="selectById" resultMap="register">
+        select *
+        from registers
+        where id = #{id}
+    </select>
+    <select id="selectByName" resultMap="register">
+        select *
+        from registers
+        where name = #{name}
+        and state = '已挂号'
+    </select>
+    <select id="selectByEmployee" resultMap="register">
+        select *
+        from registers
+        where employee = #{employee}
+        and state in ('已挂号','已接诊')
+    </select>
+</mapper>

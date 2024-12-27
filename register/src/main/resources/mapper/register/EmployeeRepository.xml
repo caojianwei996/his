@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="learn.caojw.his.register.repository.EmployeeRepository">
+    <resultMap id="department" type="learn.caojw.his.register.entity.Department">
+        <id property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <resultMap id="level" type="learn.caojw.his.register.entity.Level">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="fee" column="fee"/>
+        <result property="quota" column="quota"/>
+    </resultMap>
+    <resultMap id="employee" type="learn.caojw.his.register.entity.Employee">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="scheduling" column="scheduling"/>
+        <association property="department" column="department" select="selectDepartmentById"/>
+        <association property="level" column="level" select="selectLevelById"/>
+    </resultMap>
+    <select id="selectDepartmentById" resultMap="department">
+        select *
+        from departments
+        where id = #{id}
+    </select>
+    <select id="selectLevelById" resultMap="level">
+        select *
+        from levels
+        where id = #{id}
+    </select>
+    <select id="selectById" resultMap="employee">
+        select *
+        from employees
+        where id = #{id}
+    </select>
+    <select id="select" resultMap="employee">
+        select *
+        from employees
+        <where>
+            <if test="department != null">and department = #{department}</if>
+            <if test="level != null">and level = #{level}</if>
+        </where>
+    </select>
+</mapper>
