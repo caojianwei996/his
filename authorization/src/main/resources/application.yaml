@@ -1,0 +1,75 @@
+mybatis-plus:
+  type-handlers-package: learn.caojw.his.authorization.mybatis
+server:
+  port: 8000
+spring:
+  data:
+    redis:
+      url: redis://default:default@localhost:6379
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: postgres
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/his?currentSchema=his_authorization
+    username: postgres
+  security:
+    oauth2:
+      authorization-server:
+        client:
+          project:
+            registration:
+              authorization-grant-types:
+                - authorization_code
+                - refresh_token
+              client-authentication-methods:
+                - client_secret_basic
+              client-id: his
+              client-secret: $2a$10$NyJYaIo7St0taIeda5N8MO0s6zKFx9pCzmsiVXOsv8BoKEG17a4zG
+              redirect-uris:
+                - http://localhost
+              scopes:
+                - ADMIN
+                - REGISTRATION
+                - OUTPATIENT
+                - INSPECT
+                - CLINICAL
+                - DISPOSAL
+                - PHARMACY
+                - GUEST
+            require-authorization-consent: true
+      client:
+        provider:
+          gitee:
+            authorization-uri: https://gitee.com/oauth/authorize
+            token-uri: https://gitee.com/oauth/token
+            user-info-uri: https://gitee.com/api/v5/user
+            user-name-attribute: id
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+            user-name-attribute: id
+        registration:
+          gitee:
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_basic
+            client-id: fcd9a44cd8288ab54c495556a7c2377e4322537a21e931363c3b4cdb9cb8e79e
+            client-name: Gitee
+            client-secret: 7b84ff7aab2f313b0e5a338d301865767e9e37d7bb23c6f2e996ea30dc235b9e
+            provider: gitee
+            redirect-uri: http://localhost:8000/login/oauth2/code/gitee
+            scope:
+              - user_info
+          github:
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_basic
+            client-id: Ov23lim5HE7Iq56KxY3x
+            client-name: GitHub
+            client-secret: 4ee2e86ad12cd60f1857fb9f7d8877e197a8a8d5
+            provider: github
+            redirect-uri: http://localhost:8000/login/oauth2/code/github
+            scope:
+              - read:user
+  session:
+    redis:
+      namespace: security::login

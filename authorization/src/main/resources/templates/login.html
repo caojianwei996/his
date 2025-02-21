@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" href="/favicon.ico"/>
+    <link rel="stylesheet" href="/asset/normalize.css">
+    <link rel="stylesheet" href="/asset/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>登录</title>
+    <script sec:authorize="isAuthenticated()">
+        window.location.href = '/index'
+    </script>
+    <script>
+        function refresh() {
+            fetch("/verify")
+                .then((response) => response.json())
+                .then((data) => {
+                    document.getElementById('verify').pattern = `^${data.result}$`
+                    document.getElementById('image').src = `data:image/png;base64,${data.image}`
+                })
+        }
+
+        addEventListener('load', refresh)
+    </script>
+</head>
+<body>
+<div id="app">
+    <form class="form" action="/login" method="post" sec:authorize="!isAuthenticated()">
+        <label>
+            <span class="title">登录</span>
+        </label>
+        <label>
+            <span>账号</span>
+            <input type="text" name="username" id="username" minlength="8" maxlength="8"
+                   pattern="^[0-9]+$" required autofocus/>
+            <a href="javascript:alert('请联系管理员')">注册</a>
+        </label>
+        <label>
+            <span>密码</span>
+            <input type="password" name="password" id="password" minlength="8" maxlength="20"
+                   pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])[A-Za-z0-9]+$" required/>
+            <a href="javascript:alert('请联系管理员')">忘记</a>
+        </label>
+        <label>
+            <span>验证</span>
+            <input type="text" name="verify" id="verify" pattern="" required/>
+            <a href="javascript:refresh()">
+                <img id="image" src="" alt=""/>
+            </a>
+        </label>
+        <label>
+            <button type="submit">登录</button>
+        </label>
+        <label>
+            <a href="/oauth2/authorization/gitee">Gitee</a>
+            <a href="/oauth2/authorization/github">Github</a>
+        </label>
+    </form>
+</div>
+<script>
+    new URL(window.location.href).searchParams.has('error') && alert("密码错误")
+</script>
+</body>
+</html>

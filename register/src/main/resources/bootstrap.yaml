@@ -1,0 +1,19 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /register
+spring:
+  application:
+    name: register-service
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        shared-configs:
+          - data-id: jackson-shared.yaml
+            refresh: true
+          - data-id: sentinel-shared.yaml
+            refresh: true
+          - data-id: seata-shared.yaml
+            refresh: true
+      server-addr: localhost:8848

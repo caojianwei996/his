@@ -1,0 +1,15 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        shared-configs:
+          - data-id: jackson-shared.yaml
+            refresh: true
+          - data-id: sentinel-shared.yaml
+            refresh: true
+      server-addr: localhost:8848
